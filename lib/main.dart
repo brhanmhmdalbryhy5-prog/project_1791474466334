@@ -151,7 +151,6 @@ class _LoginPageState extends State<LoginPage> {
     if (!formKey.currentState!.validate()) return;
 
     final name = username.text.trim().toLowerCase();
-
     setState(() => busy = true);
 
     try {
@@ -181,10 +180,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       if (mounted) {
-        showMessage(
-          context,
-          'تعذر إكمال العملية: ${errorText(e)}',
-        );
+        showMessage(context, 'تعذر إكمال العملية: ${errorText(e)}');
       }
     } finally {
       if (mounted) setState(() => busy = false);
@@ -212,10 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(color: Colors.white24),
                       ),
-                      child: const Icon(
-                        Icons.school_rounded,
-                        size: 44,
-                      ),
+                      child: const Icon(Icons.school_rounded, size: 44),
                     ),
                     const SizedBox(height: 22),
                     const Text(
@@ -231,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: muted),
                     ),
                     const SizedBox(height: 30),
-
                     if (signup) ...[
                       TextFormField(
                         controller: fullName,
@@ -242,7 +234,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 14),
                     ],
-
                     TextFormField(
                       controller: username,
                       textDirection: TextDirection.ltr,
@@ -253,18 +244,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       validator: (v) {
                         final value = (v ?? '').trim();
-
-                        if (!RegExp(
-                          r'^[a-zA-Z0-9_.-]{3,24}$',
-                        ).hasMatch(value)) {
+                        if (!RegExp(r'^[a-zA-Z0-9_.-]{3,24}$')
+                            .hasMatch(value)) {
                           return 'استخدم 3 إلى 24 حرفًا إنجليزيًا أو رقمًا أو . _ -';
                         }
-
                         return null;
                       },
                     ),
                     const SizedBox(height: 14),
-
                     TextFormField(
                       controller: password,
                       obscureText: hidePassword,
@@ -273,9 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                         prefixIcon: const Icon(Icons.lock_outline),
                         suffixIcon: IconButton(
                           onPressed: () {
-                            setState(() {
-                              hidePassword = !hidePassword;
-                            });
+                            setState(() => hidePassword = !hidePassword);
                           },
                           icon: Icon(
                             hidePassword
@@ -292,7 +277,6 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(height: 22),
-
                     SizedBox(
                       width: double.infinity,
                       height: 52,
@@ -306,18 +290,13 @@ class _LoginPageState extends State<LoginPage> {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : Text(
-                                signup ? 'إنشاء حساب' : 'تسجيل الدخول',
-                              ),
+                            : Text(signup ? 'إنشاء حساب' : 'تسجيل الدخول'),
                       ),
                     ),
-
                     TextButton(
                       onPressed: busy
                           ? null
-                          : () {
-                              setState(() => signup = !signup);
-                            },
+                          : () => setState(() => signup = !signup),
                       child: Text(
                         signup
                             ? 'لديك حساب؟ سجّل الدخول'
@@ -425,9 +404,7 @@ class _HomePageState extends State<HomePage> {
                 );
                 await loadProfile();
               } else if (value == 'refresh') {
-                setState(() {
-                  subjectsFuture = loadSubjects();
-                });
+                setState(() => subjectsFuture = loadSubjects());
               } else if (value == 'logout') {
                 await signOut();
               }
@@ -456,9 +433,7 @@ class _HomePageState extends State<HomePage> {
             subjectsFuture: subjectsFuture,
             fullName: '${profile?['full_name'] ?? ''}',
             onRetry: () {
-              setState(() {
-                subjectsFuture = loadSubjects();
-              });
+              setState(() => subjectsFuture = loadSubjects());
             },
           ),
           const ServicesPage(),
@@ -469,9 +444,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFF191A1E),
         indicatorColor: const Color(0xFF363840),
         selectedIndex: tab,
-        onDestinationSelected: (i) {
-          setState(() => tab = i);
-        },
+        onDestinationSelected: (i) => setState(() => tab = i),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -492,7 +465,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 // =====================================================
-// عرض المواد الدراسية من Supabase
+// عرض المواد الدراسية
 // =====================================================
 
 class SubjectsPage extends StatelessWidget {
@@ -525,9 +498,7 @@ class SubjectsPage extends StatelessWidget {
       future: subjectsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -547,10 +518,7 @@ class SubjectsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF303139),
-                      Color(0xFF191A1E),
-                    ],
+                    colors: [Color(0xFF303139), Color(0xFF191A1E)],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                   ),
@@ -572,10 +540,7 @@ class SubjectsPage extends StatelessWidget {
                       fullName.isEmpty
                           ? 'اختر مادتك وابدأ التعلم'
                           : 'أهلًا $fullName، اختر مادتك',
-                      style: const TextStyle(
-                        color: muted,
-                        fontSize: 15,
-                      ),
+                      style: const TextStyle(color: muted, fontSize: 15),
                     ),
                     const SizedBox(height: 18),
                     const Text(
@@ -598,14 +563,11 @@ class SubjectsPage extends StatelessWidget {
                 ),
               ),
             ),
-
             if (rows.isEmpty)
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.all(24),
-                  child: Text(
-                    'لا توجد مواد نشطة في قاعدة البيانات.',
-                  ),
+                  child: Text('لا توجد مواد نشطة في قاعدة البيانات.'),
                 ),
               )
             else
@@ -627,9 +589,8 @@ class SubjectsPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => SubjectLessonsPage(
-                                  subject: row,
-                                ),
+                                builder: (_) =>
+                                    SubjectLessonsPage(subject: row),
                               ),
                             );
                           },
@@ -690,7 +651,6 @@ class SubjectsPage extends StatelessWidget {
                   ),
                 ),
               ),
-
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(24),
@@ -708,6 +668,10 @@ class SubjectsPage extends StatelessWidget {
   }
 }
 
+// =====================================================
+// قائمة دروس المادة
+// =====================================================
+
 class SubjectLessonsPage extends StatefulWidget {
   final Map<String, dynamic> subject;
 
@@ -722,8 +686,7 @@ class SubjectLessonsPage extends StatefulWidget {
 }
 
 class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
-  final TextEditingController searchController =
-      TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   List<Map<String, dynamic>> lessons = [];
   bool loading = true;
@@ -759,9 +722,10 @@ class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
       });
     } catch (e) {
       if (!mounted) return;
+
       setState(() {
         loading = false;
-        error = e.toString();
+        error = errorText(e);
       });
     }
   }
@@ -774,14 +738,13 @@ class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
     final query = searchController.text.trim().toLowerCase();
 
     final filtered = lessons.where((lesson) {
-      final title =
-          (lesson['title'] ?? '').toString().toLowerCase();
+      final title = (lesson['title'] ?? '').toString().toLowerCase();
       return title.contains(query);
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.subject['name'] ?? 'الدروس'),
+        title: Text(widget.subject['name']?.toString() ?? 'الدروس'),
         backgroundColor: color.withOpacity(0.12),
       ),
       body: RefreshIndicator(
@@ -811,10 +774,7 @@ class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
                 ),
               )
             else if (error.isNotEmpty)
-              ErrorView(
-                message: error,
-                onRetry: loadLessons,
-              )
+              ErrorView(message: error, onRetry: loadLessons)
             else if (filtered.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(30),
@@ -840,6 +800,10 @@ class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
   }
 }
 
+ // =====================================================
+ // بطاقة الدرس
+ // =====================================================
+
 class LessonTile extends StatelessWidget {
   final Map<String, dynamic> lesson;
   final Map<String, dynamic> subject;
@@ -855,30 +819,30 @@ class LessonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: panel,
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         contentPadding: const EdgeInsets.all(14),
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.15),
-          child: Icon(Icons.menu_book, color: color),
+          backgroundColor: color.withOpacity(.15),
+          child: Icon(Icons.menu_book_rounded, color: color),
         ),
         title: Text(
-          lesson['title']?.toString() ?? 'درس بدون عنوان',
+          '${lesson['title'] ?? 'درس بلا عنوان'}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: const Padding(
-          padding: EdgeInsets.only(top: 6),
-          child: Text('اضغط لفتح الدرس ومواده التعليمية'),
+          padding: EdgeInsets.only(top: 7),
+          child: Text('اضغط لفتح الدرس'),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        trailing: const Icon(Icons.arrow_back_ios_new, size: 16),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => LessonPage(
+              builder: (_) => LessonDetailPage(
                 lesson: lesson,
                 subject: subject,
-                color: color,
               ),
             ),
           );
@@ -888,25 +852,33 @@ class LessonTile extends StatelessWidget {
   }
 }
 
-class LessonPage extends StatelessWidget {
+// =====================================================
+// صفحة قراءة الدرس
+// =====================================================
+
+class LessonDetailPage extends StatelessWidget {
   final Map<String, dynamic> lesson;
   final Map<String, dynamic> subject;
-  final Color color;
 
-  const LessonPage({
+  const LessonDetailPage({
     super.key,
     required this.lesson,
     required this.subject,
-    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final lessonId = lesson['id'].toString();
+    final content = (lesson['content'] ??
+            lesson['body'] ??
+            lesson['lesson_text'] ??
+            'لم تتم إضافة محتوى لهذا الدرس بعد.')
+        .toString();
+
+    final color = subjectColor('${subject['name'] ?? ''}');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(lesson['title']?.toString() ?? 'الدرس'),
+        title: Text('${lesson['title'] ?? 'الدرس'}'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(18),
@@ -914,24 +886,20 @@ class LessonPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
+              color: color.withOpacity(.12),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: color.withOpacity(.35)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.auto_stories, color: color, size: 34),
-                const SizedBox(height: 12),
                 Text(
-                  subject['name']?.toString() ?? '',
-                  style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  '${subject['name'] ?? ''}',
+                  style: TextStyle(color: color),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Text(
-                  lesson['title']?.toString() ?? 'الدرس',
+                  '${lesson['title'] ?? 'الدرس'}',
                   style: const TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
@@ -940,196 +908,99 @@ class LessonPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          _LessonAction(
-            icon: Icons.chrome_reader_mode,
-            title: 'شرح الدرس',
-            subtitle: 'اقرأ محتوى الدرس كاملًا',
-            color: color,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TextPage(
-                    title: lesson['title']?.toString() ?? 'شرح الدرس',
-                    content:
-                        lesson['content']?.toString() ??
-                        'لم تتم إضافة شرح لهذا الدرس بعد.',
-                    color: color,
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 12),
-          _LessonAction(
-            icon: Icons.summarize,
-            title: 'ملخص الدرس',
-            subtitle: 'راجع أهم المعلومات',
-            color: color,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => LinkedContentPage(
-                    lessonId: lessonId,
-                    title: 'ملخصات الدرس',
-                    table: 'summaries',
-                    color: color,
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 12),
-          _LessonAction(
-            icon: Icons.quiz,
-            title: 'أسئلة الدرس',
-            subtitle: 'اختبر فهمك واحصل على نتيجتك',
-            color: color,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => QuizPage(
-                    subjectId: subject['id'].toString(),
-                    lessonId: lessonId,
-                    title: 'اختبار: ${lesson['title']}',
-                    color: color,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LessonAction extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _LessonAction({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: const EdgeInsets.all(16),
-        leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.15),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Text(subtitle),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      ),
-    );
-  }
-}
-
-class TextPage extends StatelessWidget {
-  final String title;
-  final String content;
-  final Color color;
-
-  const TextPage({
-    super.key,
-    required this.title,
-    required this.content,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
+          const SizedBox(height: 18),
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.10),
+              color: panel,
               borderRadius: BorderRadius.circular(18),
             ),
             child: SelectableText(
-              content.trim().isEmpty
-                  ? 'لم تتم إضافة محتوى بعد.'
-                  : content,
+              content,
+              textDirection: TextDirection.rtl,
               style: const TextStyle(
                 fontSize: 17,
                 height: 1.9,
               ),
             ),
           ),
+          const SizedBox(height: 20),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SubjectSummariesPage(
+                    subject: subject,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.notes_rounded),
+            label: const Text('الانتقال إلى ملخصات المادة'),
+          ),
+          const SizedBox(height: 10),
+          OutlinedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SubjectQuizPage(
+                    subject: subject,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.quiz_outlined),
+            label: const Text('اختبر نفسك'),
+          ),
         ],
       ),
     );
   }
 }
 
-class LinkedContentPage extends StatefulWidget {
-  final String lessonId;
-  final String title;
-  final String table;
-  final Color color;
+// =====================================================
+// ملخصات المادة
+// =====================================================
 
-  const LinkedContentPage({
+class SubjectSummariesPage extends StatefulWidget {
+  final Map<String, dynamic> subject;
+
+  const SubjectSummariesPage({
     super.key,
-    required this.lessonId,
-    required this.title,
-    required this.table,
-    required this.color,
+    required this.subject,
   });
 
   @override
-  State<LinkedContentPage> createState() =>
-      _LinkedContentPageState();
+  State<SubjectSummariesPage> createState() =>
+      _SubjectSummariesPageState();
 }
 
-class _LinkedContentPageState extends State<LinkedContentPage> {
-  List<Map<String, dynamic>> items = [];
+class _SubjectSummariesPageState extends State<SubjectSummariesPage> {
   bool loading = true;
   String error = '';
+  List<Map<String, dynamic>> summaries = [];
 
   @override
   void initState() {
     super.initState();
-    loadItems();
+    loadSummaries();
   }
 
-  Future<void> loadItems() async {
+  Future<void> loadSummaries() async {
     try {
       final result = await db
-          .from(widget.table)
+          .from('summaries')
           .select()
-          .eq('lesson_id', widget.lessonId)
+          .eq('subject_id', widget.subject['id'])
           .eq('is_published', true)
           .order('created_at');
 
       if (!mounted) return;
 
       setState(() {
-        items = List<Map<String, dynamic>>.from(result);
+        summaries = List<Map<String, dynamic>>.from(result);
         loading = false;
         error = '';
       });
@@ -1137,7 +1008,7 @@ class _LinkedContentPageState extends State<LinkedContentPage> {
       if (!mounted) return;
       setState(() {
         loading = false;
-        error = e.toString();
+        error = errorText(e);
       });
     }
   }
@@ -1145,96 +1016,126 @@ class _LinkedContentPageState extends State<LinkedContentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : error.isNotEmpty
-              ? ErrorView(
-                  message: error,
-                  onRetry: loadItems,
-                )
-              : items.isEmpty
-                  ? const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(24),
-                        child: Text(
-                          'لا يوجد محتوى منشور مرتبط بهذا الدرس بعد.',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.article_outlined,
-                              color: widget.color,
-                            ),
-                            title: Text(
-                              item['title']?.toString() ??
-                                  'ملخص بدون عنوان',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            subtitle: const Text('فتح المحتوى'),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => TextPage(
-                                    title: item['title']?.toString() ??
-                                        widget.title,
-                                    content:
-                                        item['content']?.toString() ?? '',
-                                    color: widget.color,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
+      appBar: AppBar(title: const Text('ملخصات المادة')),
+      body: RefreshIndicator(
+        onRefresh: loadSummaries,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            if (loading)
+              const Padding(
+                padding: EdgeInsets.all(30),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (error.isNotEmpty)
+              ErrorView(message: error, onRetry: loadSummaries)
+            else if (summaries.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(30),
+                child: Text(
+                  'لا توجد ملخصات منشورة لهذه المادة حتى الآن.',
+                  textAlign: TextAlign.center,
+                ),
+              )
+            else
+              ...summaries.map(
+                (summary) => Card(
+                  color: panel,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.description_outlined,
+                      color: Color(0xFFB7BAC3),
                     ),
+                    title: Text(
+                      '${summary['title'] ?? 'ملخص'}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: const Text('اضغط لقراءة الملخص'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ReadingPage(
+                            title: '${summary['title'] ?? 'ملخص'}',
+                            content: (summary['content'] ??
+                                    summary['body'] ??
+                                    summary['summary_text'] ??
+                                    'لم تتم إضافة محتوى.')
+                                .toString(),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class QuizPage extends StatefulWidget {
-  final String subjectId;
-  final String lessonId;
+class ReadingPage extends StatelessWidget {
   final String title;
-  final Color color;
+  final String content;
 
-  const QuizPage({
+  const ReadingPage({
     super.key,
-    required this.subjectId,
-    required this.lessonId,
     required this.title,
-    required this.color,
+    required this.content,
   });
 
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: panel,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: SelectableText(
+            content,
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(fontSize: 17, height: 1.9),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _QuizPageState extends State<QuizPage> {
-  List<Map<String, dynamic>> questions = [];
-  final Map<String, String> answers = {};
+// =====================================================
+// الاختبارات
+// =====================================================
 
+class SubjectQuizPage extends StatefulWidget {
+  final Map<String, dynamic> subject;
+
+  const SubjectQuizPage({
+    super.key,
+    required this.subject,
+  });
+
+  @override
+  State<SubjectQuizPage> createState() => _SubjectQuizPageState();
+}
+
+class _SubjectQuizPageState extends State<SubjectQuizPage> {
   bool loading = true;
-  bool submitted = false;
   String error = '';
+  List<Map<String, dynamic>> questions = [];
+  List<List<Map<String, dynamic>>> options = [];
+  final Map<int, String> answers = {};
+  bool finished = false;
 
   @override
   void initState() {
@@ -1244,18 +1145,33 @@ class _QuizPageState extends State<QuizPage> {
 
   Future<void> loadQuestions() async {
     try {
-      final result = await db
+      final rows = await db
           .from('questions')
-          .select('*, question_options(*)')
-          .eq('subject_id', widget.subjectId)
-          .eq('lesson_id', widget.lessonId)
-          .eq('is_published', true)
-          .order('created_at');
+          .select()
+          .eq('subject_id', widget.subject['id'])
+          .eq('is_published', true);
+
+      final loadedQuestions =
+          List<Map<String, dynamic>>.from(rows);
+
+      final loadedOptions = <List<Map<String, dynamic>>>[];
+
+      for (final question in loadedQuestions) {
+        final optionRows = await db
+            .from('question_options')
+            .select()
+            .eq('question_id', question['id']);
+
+        loadedOptions.add(
+          List<Map<String, dynamic>>.from(optionRows),
+        );
+      }
 
       if (!mounted) return;
 
       setState(() {
-        questions = List<Map<String, dynamic>>.from(result);
+        questions = loadedQuestions;
+        options = loadedOptions;
         loading = false;
         error = '';
       });
@@ -1263,235 +1179,768 @@ class _QuizPageState extends State<QuizPage> {
       if (!mounted) return;
       setState(() {
         loading = false;
-        error = e.toString();
+        error = errorText(e);
       });
     }
   }
 
-  List<Map<String, dynamic>> optionsFor(
-    Map<String, dynamic> question,
-  ) {
-    final raw = question['question_options'];
+  String questionText(Map<String, dynamic> q) =>
+      '${q['question_text'] ?? q['question'] ?? q['text'] ?? q['title'] ?? 'السؤال'}';
 
-    if (raw is! List) return [];
+  String optionText(Map<String, dynamic> o) =>
+      '${o['option_text'] ?? o['text'] ?? o['label'] ?? o['value'] ?? ''}';
 
-    final options = List<Map<String, dynamic>>.from(raw);
+  String optionValue(Map<String, dynamic> o) =>
+      '${o['id']}';
 
-    options.sort((a, b) =>
-        ((a['display_order'] ?? 0) as num).compareTo(
-          (b['display_order'] ?? 0) as num,
-        ));
-
-    return options;
+  bool isCorrect(Map<String, dynamic> option) {
+    final value = option['is_correct'];
+    return value == true || value == 1 || value == 'true';
   }
 
-  int get correctCount {
-    int count = 0;
+  int get score {
+    int result = 0;
 
-    for (final question in questions) {
-      final questionId = question['id'].toString();
-      final chosen = answers[questionId];
+    for (int i = 0; i < questions.length; i++) {
+      final selected = answers[i];
 
-      final options = optionsFor(question);
-      final selected = options.where(
-        (option) =>
-            option['option_key']?.toString() == chosen &&
-            option['is_correct'] == true,
+      if (selected == null || i >= options.length) continue;
+
+      final chosen = options[i].where(
+        (o) => optionValue(o) == selected,
       );
 
-      if (selected.isNotEmpty) count++;
+      if (chosen.isNotEmpty && isCorrect(chosen.first)) {
+        result++;
+      }
     }
 
-    return count;
-  }
-
-  int get percentage {
-    if (questions.isEmpty) return 0;
-    return ((correctCount / questions.length) * 100).round();
-  }
-
-  String get resultMessage {
-    if (percentage >= 90) return 'ممتاز! إتقان رائع للدرس.';
-    if (percentage >= 75) return 'جيد جدًا! واصل التقدم.';
-    if (percentage >= 50) return 'نتيجة جيدة، راجع بعض النقاط.';
-    return 'تحتاج إلى مراجعة الدرس والمحاولة مرة أخرى.';
+    return result;
   }
 
   @override
   Widget build(BuildContext context) {
+    final percentage = questions.isEmpty
+        ? 0
+        : (score * 100 / questions.length).round();
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: const Text('اختبر نفسك')),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : error.isNotEmpty
-              ? ErrorView(
-                  message: error,
-                  onRetry: loadQuestions,
-                )
+              ? ErrorView(message: error, onRetry: loadQuestions)
               : questions.isEmpty
                   ? const Center(
                       child: Padding(
                         padding: EdgeInsets.all(24),
                         child: Text(
-                          'لا توجد أسئلة منشورة لهذا الدرس حتى الآن.',
+                          'لا توجد أسئلة منشورة لهذه المادة.',
                           textAlign: TextAlign.center,
                         ),
                       ),
                     )
-                  : submitted
-                      ? _buildResult()
-                      : _buildQuestions(),
+                  : finished
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.emoji_events_rounded,
+                                  size: 76,
+                                  color: Color(0xFFD4A04D),
+                                ),
+                                const SizedBox(height: 18),
+                                const Text(
+                                  'انتهى الاختبار',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 14),
+                                Text(
+                                  '$percentage%',
+                                  style: const TextStyle(
+                                    fontSize: 42,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'إجابات صحيحة: $score من ${questions.length}',
+                                ),
+                                const SizedBox(height: 22),
+                                FilledButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      answers.clear();
+                                      finished = false;
+                                    });
+                                  },
+                                  child: const Text('إعادة الاختبار'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : ListView(
+                          padding: const EdgeInsets.all(16),
+                          children: [
+                            Text(
+                              '${widget.subject['name'] ?? 'المادة'}',
+                              style: const TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'أجب عن الأسئلة ثم اعرض نتيجتك. '
+                              'عدد الأسئلة: ${questions.length}',
+                              style: const TextStyle(color: muted),
+                            ),
+                            const SizedBox(height: 18),
+                            for (int i = 0; i < questions.length; i++)
+                              Card(
+                                color: panel,
+                                margin: const EdgeInsets.only(bottom: 16),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${i + 1}. ${questionText(questions[i])}',
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      if (i < options.length)
+                                        ...options[i].map(
+                                          (option) => RadioListTile<String>(
+                                            contentPadding: EdgeInsets.zero,
+                                            value: optionValue(option),
+                                            groupValue: answers[i],
+                                            title: Text(optionText(option)),
+                                            onChanged: (value) {
+                                              if (value == null) return;
+                                              setState(() {
+                                                answers[i] = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            FilledButton(
+                              onPressed: () {
+                                if (answers.length < questions.length) {
+                                  showMessage(
+                                    context,
+                                    'أجب عن جميع الأسئلة قبل عرض النتيجة.',
+                                  );
+                                  return;
+                                }
+                                setState(() => finished = true);
+                              },
+                              child: const Text('إنهاء الاختبار وعرض النسبة'),
+                            ),
+                          ],
+                        ),
     );
   }
+}
 
-  Widget _buildQuestions() {
+// =====================================================
+// الخدمات
+// =====================================================
+
+class ServicesPage extends StatelessWidget {
+  const ServicesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Text(
-          'عدد الأسئلة: ${questions.length}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+        const Text(
+          'الخدمات',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 12),
-        ...questions.asMap().entries.map((entry) {
-          final index = entry.key;
-          final question = entry.value;
-          final id = question['id'].toString();
-          final options = optionsFor(question);
-
-          return Card(
-            margin: const EdgeInsets.only(bottom: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'السؤال ${index + 1}',
-                    style: TextStyle(
-                      color: widget.color,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    question['question_text']?.toString() ??
-                        'سؤال بدون نص',
-                    style: const TextStyle(
-                      fontSize: 17,
-                      height: 1.7,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  if (options.isEmpty)
-                    const Text('لا توجد خيارات لهذا السؤال.')
-                  else
-                    ...options.map((option) {
-                      final key =
-                          option['option_key']?.toString() ?? '';
-
-                      return RadioListTile<String>(
-                        value: key,
-                        groupValue: answers[id],
-                        activeColor: widget.color,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          option['option_text']?.toString() ?? '',
-                        ),
-                        onChanged: (value) {
-                          if (value == null) return;
-                          setState(() => answers[id] = value);
-                        },
-                      );
-                    }),
-                ],
-              ),
-            ),
-          );
-        }),
         const SizedBox(height: 8),
-        ElevatedButton.icon(
-          icon: const Icon(Icons.check_circle_outline),
-          label: const Padding(
-            padding: EdgeInsets.all(14),
-            child: Text('إنهاء الاختبار وحساب النتيجة'),
-          ),
-          onPressed: () {
-            if (answers.length < questions.length) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('أجب عن جميع الأسئلة قبل إنهاء الاختبار.'),
-                ),
-              );
-              return;
-            }
-
-            setState(() => submitted = true);
+        const Text(
+          'يمكنك متابعة الإشعارات وإرسال طلباتك إلى الإدارة.',
+          style: TextStyle(color: muted),
+        ),
+        const SizedBox(height: 20),
+        ServiceCard(
+          icon: Icons.notifications_active_outlined,
+          title: 'الإشعارات',
+          subtitle: 'آخر التنبيهات والتحديثات',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const NotificationsPage(),
+              ),
+            );
+          },
+        ),
+        ServiceCard(
+          icon: Icons.support_agent_rounded,
+          title: 'طلب مساعدة',
+          subtitle: 'أرسل استفسارًا أو مشكلة إلى الإدارة',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const RequestPage(),
+              ),
+            );
+          },
+        ),
+        ServiceCard(
+          icon: Icons.notes_rounded,
+          title: 'ملخصات المواد',
+          subtitle: 'اختر المادة لعرض ملخصاتها',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const SummarySubjectsPage(),
+              ),
+            );
+          },
+        ),
+        ServiceCard(
+          icon: Icons.quiz_outlined,
+          title: 'الاختبارات',
+          subtitle: 'اختر مادة وابدأ اختبارًا',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const QuizSubjectsPage(),
+              ),
+            );
           },
         ),
       ],
     );
   }
+}
 
-  Widget _buildResult() {
+class ServiceCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const ServiceCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: panel,
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: CircleAvatar(
+          backgroundColor: Colors.white10,
+          child: Icon(icon),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Text(subtitle),
+        ),
+        trailing: const Icon(Icons.arrow_back_ios_new, size: 16),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+// =====================================================
+// اختيار مادة للملخصات
+// =====================================================
+
+class SummarySubjectsPage extends StatefulWidget {
+  const SummarySubjectsPage({super.key});
+
+  @override
+  State<SummarySubjectsPage> createState() =>
+      _SummarySubjectsPageState();
+}
+
+class _SummarySubjectsPageState extends State<SummarySubjectsPage> {
+  late Future<List<Map<String, dynamic>>> future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = fetchSubjects();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchSubjects() async {
+    final rows = await db
+        .from('subjects')
+        .select()
+        .eq('is_active', true)
+        .order('display_order');
+
+    return List<Map<String, dynamic>>.from(rows);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('ملخصات المواد')),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return ErrorView(
+              message: errorText(snapshot.error!),
+              onRetry: () => setState(() => future = fetchSubjects()),
+            );
+          }
+
+          final subjects = snapshot.data ?? [];
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: subjects
+                .map(
+                  (subject) => ServiceCard(
+                    icon: Icons.menu_book_rounded,
+                    title: '${subject['name'] ?? 'مادة'}',
+                    subtitle: 'عرض الملخصات',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              SubjectSummariesPage(subject: subject),
+                        ),
+                      );
+                    },
+                  ),
+                )
+                .toList(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// =====================================================
+// اختيار مادة للاختبارات
+// =====================================================
+
+class QuizSubjectsPage extends StatefulWidget {
+  const QuizSubjectsPage({super.key});
+
+  @override
+  State<QuizSubjectsPage> createState() => _QuizSubjectsPageState();
+}
+
+class _QuizSubjectsPageState extends State<QuizSubjectsPage> {
+  late Future<List<Map<String, dynamic>>> future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = fetchSubjects();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchSubjects() async {
+    final rows = await db
+        .from('subjects')
+        .select()
+        .eq('is_active', true)
+        .order('display_order');
+
+    return List<Map<String, dynamic>>.from(rows);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('اختبارات المواد')),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return ErrorView(
+              message: errorText(snapshot.error!),
+              onRetry: () => setState(() => future = fetchSubjects()),
+            );
+          }
+
+          final subjects = snapshot.data ?? [];
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: subjects
+                .map(
+                  (subject) => ServiceCard(
+                    icon: Icons.quiz_outlined,
+                    title: '${subject['name'] ?? 'مادة'}',
+                    subtitle: 'ابدأ الاختبار',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SubjectQuizPage(
+                            subject: subject,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+                .toList(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// =====================================================
+// الإشعارات
+// =====================================================
+
+class NotificationsPage extends StatefulWidget {
+  const NotificationsPage({super.key});
+
+  @override
+  State<NotificationsPage> createState() =>
+      _NotificationsPageState();
+}
+
+class _NotificationsPageState extends State<NotificationsPage> {
+  bool loading = true;
+  String error = '';
+  List<Map<String, dynamic>> notifications = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadNotifications();
+  }
+
+  Future<void> loadNotifications() async {
+    try {
+      final rows = await db
+          .from('notifications')
+          .select()
+          .order('created_at', ascending: false)
+          .limit(100);
+
+      if (!mounted) return;
+
+      setState(() {
+        notifications = List<Map<String, dynamic>>.from(rows);
+        loading = false;
+        error = '';
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        loading = false;
+        error = errorText(e);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('الإشعارات')),
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : error.isNotEmpty
+              ? ErrorView(
+                  message: error,
+                  onRetry: loadNotifications,
+                )
+              : notifications.isEmpty
+                  ? const Center(child: Text('لا توجد إشعارات حاليًا.'))
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: notifications.length,
+                      itemBuilder: (context, i) {
+                        final n = notifications[i];
+
+                        return Card(
+                          color: panel,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ListTile(
+                            leading: const Icon(
+                              Icons.notifications_outlined,
+                            ),
+                            title: Text(
+                              '${n['title'] ?? 'إشعار جديد'}',
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 7),
+                              child: Text(
+                                '${n['message'] ?? n['content'] ?? ''}',
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+    );
+  }
+}
+
+// =====================================================
+// إرسال طلب إلى الإدارة
+// =====================================================
+
+class RequestPage extends StatefulWidget {
+  const RequestPage({super.key});
+
+  @override
+  State<RequestPage> createState() => _RequestPageState();
+}
+
+class _RequestPageState extends State<RequestPage> {
+  final titleController = TextEditingController();
+  final messageController = TextEditingController();
+
+  bool busy = false;
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> sendRequest() async {
+    final title = titleController.text.trim();
+    final message = messageController.text.trim();
+
+    if (title.isEmpty || message.isEmpty) {
+      showMessage(context, 'اكتب عنوان الطلب وتفاصيله أولًا.');
+      return;
+    }
+
+    final user = db.auth.currentUser;
+
+    if (user == null) {
+      showMessage(context, 'سجّل الدخول أولًا.');
+      return;
+    }
+
+    setState(() => busy = true);
+
+    try {
+      await db.from('admin_requests').insert({
+        'user_id': user.id,
+        'title': title,
+        'message': message,
+        'status': 'pending',
+      });
+
+      if (!mounted) return;
+
+      titleController.clear();
+      messageController.clear();
+
+      showMessage(context, 'تم إرسال طلبك إلى الإدارة.');
+    } catch (e) {
+      if (mounted) {
+        showMessage(context, 'تعذر إرسال الطلب: ${errorText(e)}');
+      }
+    } finally {
+      if (mounted) setState(() => busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('طلب مساعدة')),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          const Text(
+            'كيف يمكننا مساعدتك؟',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'اكتب طلبك بوضوح وسيتم حفظه في قاعدة البيانات.',
+            style: TextStyle(color: muted),
+          ),
+          const SizedBox(height: 22),
+          TextField(
+            controller: titleController,
+            decoration: const InputDecoration(
+              labelText: 'عنوان الطلب',
+              prefixIcon: Icon(Icons.subject),
+            ),
+          ),
+          const SizedBox(height: 14),
+          TextField(
+            controller: messageController,
+            minLines: 5,
+            maxLines: 9,
+            decoration: const InputDecoration(
+              labelText: 'تفاصيل الطلب',
+              alignLabelWithHint: true,
+            ),
+          ),
+          const SizedBox(height: 20),
+          FilledButton.icon(
+            onPressed: busy ? null : sendRequest,
+            icon: const Icon(Icons.send_rounded),
+            label: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(busy ? 'جارٍ الإرسال...' : 'إرسال الطلب'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =====================================================
+// الإعدادات
+// =====================================================
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = db.auth.currentUser;
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text(
+          'الإعدادات',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        Card(
+          color: panel,
+          child: ListTile(
+            leading: const CircleAvatar(
+              child: Icon(Icons.person_outline),
+            ),
+            title: const Text('الحساب الحالي'),
+            subtitle: Text(user?.email ?? 'لا يوجد حساب'),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          color: panel,
+          child: const ListTile(
+            leading: Icon(Icons.school_outlined),
+            title: Text('البريهي التعليمي'),
+            subtitle: Text('تعلّم، راجع، واختبر فهمك'),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          color: panel,
+          child: ListTile(
+            leading: const Icon(Icons.logout_rounded),
+            title: const Text('تسجيل الخروج'),
+            onTap: () async {
+              await db.auth.signOut();
+            },
+          ),
+        ),
+        const SizedBox(height: 28),
+        const Text(
+          'مع تحياتي برهان البريهي',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: muted),
+        ),
+      ],
+    );
+  }
+}
+
+// =====================================================
+// واجهة عامة لعرض الخطأ وإعادة المحاولة
+// =====================================================
+
+class ErrorView extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+
+  const ErrorView({
+    super.key,
+    required this.message,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
-              radius: 55,
-              backgroundColor: widget.color.withOpacity(0.15),
-              child: Icon(
-                percentage >= 50 ? Icons.emoji_events : Icons.menu_book,
-                size: 54,
-                color: widget.color,
-              ),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFF06472),
+              size: 48,
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'نتيجتك النهائية',
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              '$percentage%',
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: widget.color,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text('الإجابات الصحيحة: $correctCount من ${questions.length}'),
             const SizedBox(height: 14),
-            Text(
-              resultMessage,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 17, height: 1.7),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    answers.clear();
-                    submitted = false;
-                  });
-                },
-                child: const Text('إعادة الاختبار'),
+            const Text(
+              'حدث خطأ',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('العودة إلى الدرس'),
+            SelectableText(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: muted),
+            ),
+            const SizedBox(height: 18),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh),
+              label: const Text('إعادة المحاولة'),
             ),
           ],
         ),
@@ -1500,8 +1949,19 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
+ // =====================================================
+// صفحة تفعيل المدير — تم إصلاح خطأ async/await
+// =====================================================
+
 class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+  final bool initiallyAdmin;
+  final Future<void> Function()? onActivated;
+
+  const AdminPage({
+    super.key,
+    this.initiallyAdmin = false,
+    this.onActivated,
+  });
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -1509,8 +1969,31 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   final TextEditingController codeController = TextEditingController();
+
   bool loading = false;
   String error = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initiallyAdmin) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+
+        await widget.onActivated?.call();
+
+        if (!mounted) return;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const AdminDashboard(),
+          ),
+        );
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -1538,6 +2021,7 @@ class _AdminPageState extends State<AdminPage> {
       );
 
       final user = db.auth.currentUser;
+
       if (user == null) {
         throw Exception('انتهت جلسة الدخول. سجّل الدخول مجددًا.');
       }
@@ -1549,8 +2033,14 @@ class _AdminPageState extends State<AdminPage> {
           .maybeSingle();
 
       if (profile == null || profile['role'] != 'admin') {
-        throw Exception('لم يتم تفعيل صلاحيات المدير لهذا الحساب.');
+        throw Exception(
+          'لم يتم تفعيل صلاحيات المدير لهذا الحساب.',
+        );
       }
+
+      if (!mounted) return;
+
+      await widget.onActivated?.call();
 
       if (!mounted) return;
 
@@ -1562,11 +2052,14 @@ class _AdminPageState extends State<AdminPage> {
       );
     } catch (e) {
       if (!mounted) return;
+
       setState(() {
-        error = 'تعذر تفعيل لوحة المدير.\n${e.toString()}';
+        error = 'تعذر تفعيل لوحة المدير:\n${errorText(e)}';
       });
     } finally {
-      if (mounted) setState(() => loading = false);
+      if (mounted) {
+        setState(() => loading = false);
+      }
     }
   }
 
@@ -1580,14 +2073,16 @@ class _AdminPageState extends State<AdminPage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 450),
             child: Card(
+              color: panel,
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Icons.admin_panel_settings,
+                      Icons.admin_panel_settings_rounded,
                       size: 68,
-                      color: Color(0xFFB54A55),
+                      color: Color(0xFFB7BAC3),
                     ),
                     const SizedBox(height: 16),
                     const Text(
@@ -1599,7 +2094,7 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'أدخل رمز المدير المرتبط بقاعدة بيانات التطبيق.',
+                      'أدخل رمز المدير المرتبط بقاعدة البيانات.',
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 22),
@@ -1622,7 +2117,7 @@ class _AdminPageState extends State<AdminPage> {
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: FilledButton(
                         onPressed: loading ? null : activateAdmin,
                         child: Padding(
                           padding: const EdgeInsets.all(13),
@@ -1649,18 +2144,26 @@ class _AdminPageState extends State<AdminPage> {
   }
 }
 
-class AdminDashboard extends StatelessWidget {
+// =====================================================
+// لوحة المدير الرئيسية
+// =====================================================
+
+class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
 
-  Future<void> signOut(BuildContext context) async {
-    await db.auth.signOut();
-    if (!context.mounted) return;
+  @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+}
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const AuthGate()),
-      (route) => false,
-    );
-  }
+class _AdminDashboardState extends State<AdminDashboard> {
+  int selectedTab = 0;
+
+  final pages = const [
+    AdminContentPage(contentType: 'lessons'),
+    AdminContentPage(contentType: 'summaries'),
+    AdminContentPage(contentType: 'questions'),
+    AdminRequestsPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -1670,159 +2173,92 @@ class AdminDashboard extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: 'تسجيل الخروج',
-            onPressed: () => signOut(context),
+            onPressed: () async {
+              await db.auth.signOut();
+              if (context.mounted) {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              }
+            },
             icon: const Icon(Icons.logout),
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(18),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              color: const Color(0xFFB54A55).withOpacity(0.14),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.admin_panel_settings,
-                  size: 42,
-                  color: Color(0xFFB54A55),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'مرحبًا بك في الإدارة',
-                  style: TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'أضف المحتوى التعليمي وعدّله وانشره للطلاب.',
-                ),
-              ],
-            ),
+      body: IndexedStack(
+        index: selectedTab,
+        children: pages,
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedTab,
+        onDestinationSelected: (i) {
+          setState(() => selectedTab = i);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.menu_book_outlined),
+            label: 'الدروس',
           ),
-          const SizedBox(height: 22),
-          _AdminAction(
-            icon: Icons.menu_book,
-            title: 'إدارة الدروس',
-            description: 'إضافة الدروس وتعديلها وحذفها ونشرها',
-            onTap: () => _openManager(context, 'lessons'),
+          NavigationDestination(
+            icon: Icon(Icons.notes_outlined),
+            label: 'الملخصات',
           ),
-          _AdminAction(
-            icon: Icons.summarize,
-            title: 'إدارة الملخصات',
-            description: 'ربط الملخصات بالدروس',
-            onTap: () => _openManager(context, 'summaries'),
+          NavigationDestination(
+            icon: Icon(Icons.quiz_outlined),
+            label: 'الأسئلة',
           ),
-          _AdminAction(
-            icon: Icons.quiz,
-            title: 'إدارة الأسئلة',
-            description: 'إنشاء أسئلة واختيار الإجابة الصحيحة',
-            onTap: () => _openManager(context, 'questions'),
-          ),
-          _AdminAction(
-            icon: Icons.home_outlined,
-            title: 'العودة إلى التطبيق',
-            description: 'العودة إلى صفحة المواد التعليمية',
-            onTap: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const AuthGate(),
-                ),
-                (route) => false,
-              );
-            },
+          NavigationDestination(
+            icon: Icon(Icons.inbox_outlined),
+            label: 'الطلبات',
           ),
         ],
       ),
     );
   }
-
-  void _openManager(BuildContext context, String type) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ContentManager(type: type),
-      ),
-    );
-  }
 }
 
-class _AdminAction extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final VoidCallback onTap;
+// =====================================================
+// إضافة الدروس والملخصات والأسئلة
+// =====================================================
 
-  const _AdminAction({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.onTap,
-  });
+class AdminContentPage extends StatefulWidget {
+  final String contentType;
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: const EdgeInsets.all(16),
-        leading: const Icon(
-          Icons.arrow_forward_ios,
-          color: Color(0xFFB54A55),
-          size: 18,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 6),
-          child: Text(description),
-        ),
-        trailing: Icon(icon, color: const Color(0xFFB54A55), size: 28),
-      ),
-    );
-  }
-}
-
-class ContentManager extends StatefulWidget {
-  final String type;
-
-  const ContentManager({
+  const AdminContentPage({
     super.key,
-    required this.type,
+    required this.contentType,
   });
 
   @override
-  State<ContentManager> createState() => _ContentManagerState();
+  State<AdminContentPage> createState() => _AdminContentPageState();
 }
 
-class _ContentManagerState extends State<ContentManager> {
-  List<Map<String, dynamic>> items = [];
+class _AdminContentPageState extends State<AdminContentPage> {
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
+  final questionController = TextEditingController();
+  final option1Controller = TextEditingController();
+  final option2Controller = TextEditingController();
+  final option3Controller = TextEditingController();
+  final option4Controller = TextEditingController();
+
   List<Map<String, dynamic>> subjects = [];
+  List<Map<String, dynamic>> entries = [];
+
+  String? selectedSubjectId;
+  int correctOption = 0;
+
   bool loading = true;
+  bool saving = false;
   String error = '';
 
-  String get table => widget.type;
+  bool get isQuestion => widget.contentType == 'questions';
+  bool get isSummary => widget.contentType == 'summaries';
+
+  String get tableName => widget.contentType;
 
   String get pageTitle {
-    switch (widget.type) {
-      case 'lessons':
-        return 'إدارة الدروس';
-      case 'summaries':
-        return 'إدارة الملخصات';
-      default:
-        return 'إدارة الأسئلة';
-    }
+    if (isQuestion) return 'إدارة الأسئلة';
+    if (isSummary) return 'إدارة الملخصات';
+    return 'إدارة الدروس';
   }
 
   @override
@@ -1831,62 +2267,160 @@ class _ContentManagerState extends State<ContentManager> {
     loadData();
   }
 
-  Future<void> loadData() async {
-    setState(() {
-      loading = true;
-      error = '';
-    });
+  @override
+  void dispose() {
+    titleController.dispose();
+    contentController.dispose();
+    questionController.dispose();
+    option1Controller.dispose();
+    option2Controller.dispose();
+    option3Controller.dispose();
+    option4Controller.dispose();
+    super.dispose();
+  }
 
+  Future<void> loadData() async {
     try {
-      final subjectResult = await db
+      final subjectRows = await db
           .from('subjects')
           .select()
           .order('display_order');
 
-      final result = await db
-          .from(table)
+      final contentRows = await db
+          .from(tableName)
           .select()
-          .order('created_at', ascending: false);
+          .order('created_at', ascending: false)
+          .limit(100);
 
       if (!mounted) return;
 
+      final loadedSubjects =
+          List<Map<String, dynamic>>.from(subjectRows);
+
       setState(() {
-        subjects = List<Map<String, dynamic>>.from(subjectResult);
-        items = List<Map<String, dynamic>>.from(result);
+        subjects = loadedSubjects;
+        entries = List<Map<String, dynamic>>.from(contentRows);
+        selectedSubjectId ??= loadedSubjects.isNotEmpty
+            ? '${loadedSubjects.first['id']}'
+            : null;
         loading = false;
+        error = '';
       });
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        error = e.toString();
         loading = false;
+        error = errorText(e);
       });
     }
   }
 
-  String subjectName(dynamic subjectId) {
-    for (final subject in subjects) {
-      if (subject['id'].toString() == subjectId?.toString()) {
-        return subject['name']?.toString() ?? 'مادة';
+  Future<void> saveContent() async {
+    if (selectedSubjectId == null) {
+      showMessage(context, 'أضف مادة دراسية أولًا.');
+      return;
+    }
+
+    final title = titleController.text.trim();
+    final content = contentController.text.trim();
+
+    if (title.isEmpty) {
+      showMessage(context, 'أدخل عنوان المحتوى.');
+      return;
+    }
+
+    if (!isQuestion && content.isEmpty) {
+      showMessage(context, 'أدخل محتوى الدرس أو الملخص.');
+      return;
+    }
+
+    if (isQuestion) {
+      final questionText = questionController.text.trim();
+      final optionTexts = [
+        option1Controller.text.trim(),
+        option2Controller.text.trim(),
+        option3Controller.text.trim(),
+        option4Controller.text.trim(),
+      ];
+
+      if (questionText.isEmpty || optionTexts.any((v) => v.isEmpty)) {
+        showMessage(context, 'أدخل السؤال وجميع الخيارات الأربعة.');
+        return;
       }
     }
-    return 'مادة غير محددة';
-  }
 
-  String itemTitle(Map<String, dynamic> item) {
-    if (widget.type == 'questions') {
-      return item['question_text']?.toString() ?? 'سؤال';
+    setState(() => saving = true);
+
+    try {
+      final payload = <String, dynamic>{
+        'subject_id': selectedSubjectId,
+        'title': title,
+        'is_published': true,
+      };
+
+      if (isQuestion) {
+        payload['question_text'] = questionController.text.trim();
+      } else {
+        payload['content'] = content;
+      }
+
+      final inserted = await db
+          .from(tableName)
+          .insert(payload)
+          .select()
+          .single();
+
+      if (isQuestion) {
+        final questionId = inserted['id'];
+        final optionTexts = [
+          option1Controller.text.trim(),
+          option2Controller.text.trim(),
+          option3Controller.text.trim(),
+          option4Controller.text.trim(),
+        ];
+
+        for (int i = 0; i < optionTexts.length; i++) {
+          await db.from('question_options').insert({
+            'question_id': questionId,
+            'option_text': optionTexts[i],
+            'is_correct': i == correctOption,
+          });
+        }
+      }
+
+      if (!mounted) return;
+
+      titleController.clear();
+      contentController.clear();
+      questionController.clear();
+      option1Controller.clear();
+      option2Controller.clear();
+      option3Controller.clear();
+      option4Controller.clear();
+
+      showMessage(context, 'تمت إضافة المحتوى بنجاح.');
+      await loadData();
+    } catch (e) {
+      if (mounted) {
+        showMessage(
+          context,
+          'تعذرت إضافة المحتوى: ${errorText(e)}',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => saving = false);
     }
-    return item['title']?.toString() ?? 'بدون عنوان';
   }
 
-  Future<void> deleteItem(Map<String, dynamic> item) async {
+  Future<void> deleteEntry(Map<String, dynamic> entry) async {
+    final id = entry['id'];
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('تأكيد الحذف'),
-        content: const Text(
-          'هل تريد حذف هذا المحتوى؟ لا يمكن التراجع عن الحذف.',
+        content: Text(
+          'هل تريد حذف "${entry['title'] ?? 'هذا المحتوى'}"؟',
         ),
         actions: [
           TextButton(
@@ -1904,860 +2438,213 @@ class _ContentManagerState extends State<ContentManager> {
     if (confirmed != true) return;
 
     try {
-      await db.from(table).delete().eq('id', item['id']);
-
-      if (widget.type == 'questions') {
-        // خيارات السؤال تُحذف تلقائيًا إذا كان المفتاح الأجنبي
-        // في قاعدة البيانات مضبوطًا على ON DELETE CASCADE.
-      }
+      await db.from(tableName).delete().eq('id', id);
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم حذف المحتوى.')),
-      );
+      showMessage(context, 'تم حذف المحتوى.');
       await loadData();
     } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تعذر الحذف: $e')),
-      );
-    }
-  }
-
-  Future<void> openEditor([Map<String, dynamic>? item]) async {
-    final saved = await Navigator.push<bool>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ContentEditor(
-          type: widget.type,
-          subjects: subjects,
-          item: item,
-        ),
-      ),
-    );
-
-    if (saved == true) loadData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(pageTitle)),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => openEditor(),
-        icon: const Icon(Icons.add),
-        label: const Text('إضافة محتوى'),
-      ),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : error.isNotEmpty
-              ? ErrorView(message: error, onRetry: loadData)
-              : RefreshIndicator(
-                  onRefresh: loadData,
-                  child: items.isEmpty
-                      ? ListView(
-                          padding: const EdgeInsets.all(30),
-                          children: const [
-                            SizedBox(height: 100),
-                            Icon(Icons.inventory_2_outlined, size: 55),
-                            SizedBox(height: 16),
-                            Center(
-                              child: Text(
-                                'لا يوجد محتوى حتى الآن.\nاضغط «إضافة محتوى» للبدء.',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        )
-                      : ListView.builder(
-                          padding: const EdgeInsets.fromLTRB(12, 12, 12, 90),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            final item = items[index];
-                            final published =
-                                item['is_published'] == true;
-
-                            return Card(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      itemTitle(item),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      subjectName(item['subject_id']),
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.65),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          published
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          size: 17,
-                                          color: published
-                                              ? Colors.green
-                                              : Colors.orange,
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          published ? 'منشور' : 'مسودة',
-                                        ),
-                                        const Spacer(),
-                                        IconButton(
-                                          tooltip: 'تعديل',
-                                          onPressed: () => openEditor(item),
-                                          icon: const Icon(Icons.edit_outlined),
-                                        ),
-                                        IconButton(
-                                          tooltip: 'حذف',
-                                          onPressed: () => deleteItem(item),
-                                          icon: const Icon(
-                                            Icons.delete_outline,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-    );
-  }
-}
-
-class ContentEditor extends StatefulWidget {
-  final String type;
-  final List<Map<String, dynamic>> subjects;
-  final Map<String, dynamic>? item;
-
-  const ContentEditor({
-    super.key,
-    required this.type,
-    required this.subjects,
-    this.item,
-  });
-
-  @override
-  State<ContentEditor> createState() => _ContentEditorState();
-}
-
-class _ContentEditorState extends State<ContentEditor> {
-  final formKey = GlobalKey<FormState>();
-
-  final titleController = TextEditingController();
-  final contentController = TextEditingController();
-  final questionController = TextEditingController();
-  final explanationController = TextEditingController();
-
-  final optionControllers = List.generate(
-    4,
-    (_) => TextEditingController(),
-  );
-
-  String? subjectId;
-  String? lessonId;
-  String correctOption = 'A';
-  bool published = true;
-  bool saving = false;
-  bool lessonsLoading = false;
-
-  List<Map<String, dynamic>> lessons = [];
-
-  bool get isQuestion => widget.type == 'questions';
-  bool get isLesson => widget.type == 'lessons';
-  bool get isSummary => widget.type == 'summaries';
-  bool get isEditing => widget.item != null;
-
-  String get heading {
-    if (isQuestion) return isEditing ? 'تعديل سؤال' : 'إضافة سؤال';
-    if (isSummary) return isEditing ? 'تعديل ملخص' : 'إضافة ملخص';
-    return isEditing ? 'تعديل درس' : 'إضافة درس';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    final item = widget.item;
-
-    if (item != null) {
-      subjectId = item['subject_id']?.toString();
-      lessonId = item['lesson_id']?.toString();
-      published = item['is_published'] == true;
-
-      if (isQuestion) {
-        questionController.text =
-            item['question_text']?.toString() ?? '';
-        explanationController.text =
-            item['explanation']?.toString() ?? '';
-      } else {
-        titleController.text = item['title']?.toString() ?? '';
-        contentController.text = item['content']?.toString() ?? '';
+      if (mounted) {
+        showMessage(context, 'تعذر الحذف: ${errorText(e)}');
       }
-    } else if (widget.subjects.isNotEmpty) {
-      subjectId = widget.subjects.first['id'].toString();
-    }
-
-    if (isQuestion && item != null) {
-      loadExistingOptions(item['id'].toString());
-    }
-
-    if (isQuestion || isSummary) {
-      loadLessons();
-    }
-  }
-
-  Future<void> loadExistingOptions(String questionId) async {
-    try {
-      final result = await db
-          .from('question_options')
-          .select()
-          .eq('question_id', questionId);
-
-      final options = List<Map<String, dynamic>>.from(result);
-
-      for (final option in options) {
-        final key = option['option_key']?.toString() ?? '';
-        final index = const ['A', 'B', 'C', 'D'].indexOf(key);
-
-        if (index >= 0) {
-          optionControllers[index].text =
-              option['option_text']?.toString() ?? '';
-
-          if (option['is_correct'] == true) {
-            correctOption = key;
-          }
-        }
-      }
-
-      if (mounted) setState(() {});
-    } catch (_) {
-      // يمكن للمستخدم إدخال الخيارات يدويًا إذا تعذر تحميلها.
-    }
-  }
-
-  Future<void> loadLessons() async {
-    if (subjectId == null) return;
-
-    setState(() => lessonsLoading = true);
-
-    try {
-      final result = await db
-          .from('lessons')
-          .select('id, title, subject_id')
-          .eq('subject_id', subjectId!)
-          .order('created_at', ascending: false);
-
-      if (!mounted) return;
-
-      lessons = List<Map<String, dynamic>>.from(result);
-
-      if (lessonId != null &&
-          !lessons.any((lesson) => lesson['id'].toString() == lessonId)) {
-        lessonId = null;
-      }
-
-      setState(() => lessonsLoading = false);
-    } catch (e) {
-      if (!mounted) return;
-      setState(() => lessonsLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تعذر تحميل الدروس: $e')),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    contentController.dispose();
-    questionController.dispose();
-    explanationController.dispose();
-
-    for (final controller in optionControllers) {
-      controller.dispose();
-    }
-
-    super.dispose();
-  }
-
-  Future<void> saveContent() async {
-    if (!formKey.currentState!.validate()) return;
-
-    if (subjectId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('اختر المادة الدراسية أولًا.')),
-      );
-      return;
-    }
-
-    if ((isSummary || isQuestion) && lessonId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('اختر الدرس الذي يرتبط به هذا المحتوى.'),
-        ),
-      );
-      return;
-    }
-
-    if (isQuestion) {
-      if (optionControllers.any((controller) =>
-          controller.text.trim().isEmpty)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('أكمل الخيارات الأربعة قبل الحفظ.'),
-          ),
-        );
-        return;
-      }
-    }
-
-    setState(() => saving = true);
-
-    try {
-      final user = db.auth.currentUser;
-
-      final Map<String, dynamic> payload = {
-        'subject_id': subjectId,
-        'is_published': published,
-        'updated_at': DateTime.now().toUtc().toIso8601String(),
-      };
-
-      if (isLesson || isSummary) {
-        payload['title'] = titleController.text.trim();
-        payload['content'] = contentController.text.trim();
-      }
-
-      if (isSummary || isQuestion) {
-        payload['lesson_id'] = lessonId;
-      }
-
-      if (isSummary || isQuestion) {
-        payload['created_by'] = user?.id;
-      }
-
-      if (isQuestion) {
-        payload['question_text'] = questionController.text.trim();
-        payload['explanation'] = explanationController.text.trim();
-        payload['question_type'] = 'multiple_choice';
-        payload['points'] = 1;
-      }
-
-      dynamic savedItem;
-
-      if (isEditing) {
-        savedItem = await db
-            .from(widget.type)
-            .update(payload)
-            .eq('id', widget.item!['id'])
-            .select()
-            .single();
-      } else {
-        payload['created_by'] = user?.id;
-        savedItem = await db
-            .from(widget.type)
-            .insert(payload)
-            .select()
-            .single();
-      }
-
-      if (isQuestion) {
-        final questionId = savedItem['id'].toString();
-
-        if (isEditing) {
-          await db
-              .from('question_options')
-              .delete()
-              .eq('question_id', questionId);
-        }
-
-        final optionRows = <Map<String, dynamic>>[];
-
-        for (int i = 0; i < 4; i++) {
-          final key = const ['A', 'B', 'C', 'D'][i];
-
-          optionRows.add({
-            'question_id': questionId,
-            'option_key': key,
-            'option_text': optionControllers[i].text.trim(),
-            'is_correct': key == correctOption,
-            'display_order': i + 1,
-          });
-        }
-
-        await db.from('question_options').insert(optionRows);
-      }
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم حفظ المحتوى بنجاح.')),
-      );
-
-      Navigator.pop(context, true);
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'تعذر حفظ المحتوى.\nتحقق من اتصال قاعدة البيانات وصلاحيات المدير.\n$e',
-          ),
-          duration: const Duration(seconds: 7),
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => saving = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(heading)),
-      body: Form(
-        key: formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(18),
-          children: [
-            const Text(
-              'المادة الدراسية',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            DropdownButtonFormField<String>(
-              value: widget.subjects.any(
-                (subject) => subject['id'].toString() == subjectId,
-              )
-                  ? subjectId
-                  : null,
-              isExpanded: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-              hint: const Text('اختر المادة'),
-              items: widget.subjects.map((subject) {
-                return DropdownMenuItem<String>(
-                  value: subject['id'].toString(),
-                  child: Text(subject['name']?.toString() ?? ''),
-                );
-              }).toList(),
-              onChanged: isEditing
-                  ? null
-                  : (value) {
-                      setState(() {
-                        subjectId = value;
-                        lessonId = null;
-                      });
-
-                      if (isSummary || isQuestion) loadLessons();
-                    },
-              validator: (value) =>
-                  value == null ? 'اختر المادة' : null,
-            ),
-            const SizedBox(height: 18),
-            if (isLesson || isSummary) ...[
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  labelText: 'عنوان المحتوى',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? 'أدخل العنوان'
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: contentController,
-                minLines: 8,
-                maxLines: 20,
-                decoration: const InputDecoration(
-                  labelText: 'النص التعليمي',
-                  alignLabelWithHint: true,
-                  border: OutlineInputBorder(),
-                  hintText: 'اكتب محتوى الدرس أو الملخص هنا...',
-                ),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? 'أدخل المحتوى'
-                    : null,
-              ),
-            ],
-            if (isSummary || isQuestion) ...[
-              const SizedBox(height: 8),
-              const Text(
-                'الدرس المرتبط',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              if (lessonsLoading)
-                const Center(child: CircularProgressIndicator())
-              else if (lessons.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    'لا توجد دروس لهذه المادة. أضف درسًا أولًا.',
-                  ),
-                )
-              else
-                DropdownButtonFormField<String>(
-                  value: lessons.any(
-                    (lesson) => lesson['id'].toString() == lessonId,
-                  )
-                      ? lessonId
-                      : null,
-                  isExpanded: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  hint: const Text('اختر الدرس'),
-                  items: lessons.map((lesson) {
-                    return DropdownMenuItem<String>(
-                      value: lesson['id'].toString(),
-                      child: Text(
-                        lesson['title']?.toString() ?? 'درس',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) => setState(() => lessonId = value),
-                  validator: (value) =>
-                      value == null ? 'اختر الدرس المرتبط' : null,
-                ),
-            ],
-            if (isQuestion) ...[
-              const SizedBox(height: 18),
-              TextFormField(
-                controller: questionController,
-                minLines: 2,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  labelText: 'نص السؤال',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? 'أدخل نص السؤال'
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'خيارات الإجابة',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              for (int i = 0; i < 4; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: TextFormField(
-                    controller: optionControllers[i],
-                    decoration: InputDecoration(
-                      labelText:
-                          'الخيار ${const ['A', 'B', 'C', 'D'][i]}',
-                      border: const OutlineInputBorder(),
+    return loading
+        ? const Center(child: CircularProgressIndicator())
+        : error.isNotEmpty
+            ? ErrorView(message: error, onRetry: loadData)
+            : ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Text(
+                    pageTitle,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
                     ),
-                    validator: (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'أدخل نص الخيار'
-                            : null,
                   ),
-                ),
-              const Text(
-                'حدد الإجابة الصحيحة',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: correctOption,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  DropdownMenuItem(value: 'A', child: Text('الخيار A')),
-                  DropdownMenuItem(value: 'B', child: Text('الخيار B')),
-                  DropdownMenuItem(value: 'C', child: Text('الخيار C')),
-                  DropdownMenuItem(value: 'D', child: Text('الخيار D')),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'يمكنك إضافة محتوى جديد أو حذف المحتوى الموجود.',
+                    style: TextStyle(color: muted),
+                  ),
+                  const SizedBox(height: 18),
+                  DropdownButtonFormField<String>(
+                    value: selectedSubjectId,
+                    decoration: const InputDecoration(
+                      labelText: 'المادة الدراسية',
+                    ),
+                    items: subjects.map((subject) {
+                      return DropdownMenuItem<String>(
+                        value: '${subject['id']}',
+                        child: Text('${subject['name'] ?? 'مادة'}'),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() => selectedSubjectId = value);
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                      labelText: isQuestion
+                          ? 'عنوان مجموعة الأسئلة'
+                          : 'عنوان المحتوى',
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  if (isQuestion) ...[
+                    TextField(
+                      controller: questionController,
+                      minLines: 2,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        labelText: 'نص السؤال',
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    for (final item in [
+                      option1Controller,
+                      option2Controller,
+                      option3Controller,
+                      option4Controller,
+                    ].asMap().entries)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: TextField(
+                          controller: item.value,
+                          decoration: InputDecoration(
+                            labelText: 'الخيار ${item.key + 1}',
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 4),
+                    const Text('حدد الإجابة الصحيحة:'),
+                    const SizedBox(height: 6),
+                    RadioGroup<int>(
+                      groupValue: correctOption,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() => correctOption = value);
+                        }
+                      },
+                      child: Column(
+                        children: List.generate(
+                          4,
+                          (i) => RadioListTile<int>(
+                            value: i,
+                            title: Text('الخيار ${i + 1}'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ] else
+                    TextField(
+                      controller: contentController,
+                      minLines: 5,
+                      maxLines: 12,
+                      decoration: InputDecoration(
+                        labelText: isSummary
+                            ? 'نص الملخص'
+                            : 'نص الدرس',
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: saving ? null : saveContent,
+                      icon: const Icon(Icons.add_circle_outline),
+                      label: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          saving ? 'جارٍ الحفظ...' : 'إضافة المحتوى',
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'المحتوى الحالي',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (entries.isEmpty)
+                    const Text('لا يوجد محتوى مضاف حتى الآن.')
+                  else
+                    ...entries.map(
+                      (entry) => Card(
+                        color: panel,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: ListTile(
+                          title: Text(
+                            '${entry['title'] ?? 'بلا عنوان'}',
+                          ),
+                          subtitle: Text(
+                            'معرّف المحتوى: ${entry['id']}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: IconButton(
+                            tooltip: 'حذف',
+                            onPressed: () => deleteEntry(entry),
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => correctOption = value);
-                  }
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: explanationController,
-                minLines: 2,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  labelText: 'تفسير الإجابة (اختياري)',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-            const SizedBox(height: 18),
-            SwitchListTile(
-              value: published,
-              onChanged: (value) => setState(() => published = value),
-              title: const Text('نشر المحتوى للطلاب'),
-              subtitle: const Text(
-                'عند إيقافه سيبقى المحتوى مسودة داخل لوحة الإدارة.',
-              ),
-            ),
-            const SizedBox(height: 22),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: saving ? null : saveContent,
-                icon: saving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.save_outlined),
-                label: Padding(
-                  padding: const EdgeInsets.all(13),
-                  child: Text(saving ? 'جارٍ الحفظ...' : 'حفظ المحتوى'),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+              );
   }
 }
 
-class ServicesPage extends StatelessWidget {
-  const ServicesPage({super.key});
+// =====================================================
+// طلبات الطلاب للإدارة
+// =====================================================
+
+class AdminRequestsPage extends StatefulWidget {
+  const AdminRequestsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('الخدمات')),
-      body: ListView(
-        padding: const EdgeInsets.all(18),
-        children: [
-          const Text(
-            'خدمات الطالب',
-            style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'يمكنك مراجعة المواد والدروس والملخصات والاختبارات من الصفحة الرئيسية.',
-            style: TextStyle(height: 1.7),
-          ),
-          const SizedBox(height: 20),
-          Card(
-            child: ListTile(
-              leading: const Icon(
-                Icons.support_agent,
-                color: Color(0xFFB54A55),
-              ),
-              title: const Text('طلب مساعدة'),
-              subtitle: const Text('أرسل طلبًا إلى إدارة التطبيق'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ServiceRequestPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(
-                Icons.notifications_none,
-                color: Color(0xFFB54A55),
-              ),
-              title: const Text('التنبيهات'),
-              subtitle: const Text('عرض آخر التنبيهات المنشورة'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const NotificationsPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<AdminRequestsPage> createState() => _AdminRequestsPageState();
 }
 
-class ServiceRequestPage extends StatefulWidget {
-  const ServiceRequestPage({super.key});
-
-  @override
-  State<ServiceRequestPage> createState() => _ServiceRequestPageState();
-}
-
-class _ServiceRequestPageState extends State<ServiceRequestPage> {
-  final titleController = TextEditingController();
-  final bodyController = TextEditingController();
-
-  bool sending = false;
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    bodyController.dispose();
-    super.dispose();
-  }
-
-  Future<void> sendRequest() async {
-    final title = titleController.text.trim();
-    final body = bodyController.text.trim();
-    final user = db.auth.currentUser;
-
-    if (title.isEmpty || body.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('أكمل عنوان الطلب وتفاصيله.')),
-      );
-      return;
-    }
-
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('سجّل الدخول أولًا لإرسال الطلب.')),
-      );
-      return;
-    }
-
-    setState(() => sending = true);
-
-    try {
-      await db.from('admin_requests').insert({
-        'user_id': user.id,
-        'title': title,
-        'content': body,
-        'status': 'pending',
-      });
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم إرسال طلبك إلى الإدارة.')),
-      );
-
-      Navigator.pop(context);
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'تعذر إرسال الطلب. قد تختلف أعمدة جدول الطلبات في قاعدة بياناتك.\n$e',
-          ),
-          duration: const Duration(seconds: 7),
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => sending = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('طلب مساعدة')),
-      body: ListView(
-        padding: const EdgeInsets.all(18),
-        children: [
-          const Text(
-            'اكتب طلبك بوضوح، وستتمكن الإدارة من مراجعته.',
-            style: TextStyle(height: 1.7),
-          ),
-          const SizedBox(height: 18),
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(
-              labelText: 'عنوان الطلب',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 14),
-          TextField(
-            controller: bodyController,
-            minLines: 5,
-            maxLines: 10,
-            decoration: const InputDecoration(
-              labelText: 'تفاصيل الطلب',
-              alignLabelWithHint: true,
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: sending ? null : sendRequest,
-            child: Padding(
-              padding: const EdgeInsets.all(13),
-              child: Text(sending ? 'جارٍ الإرسال...' : 'إرسال الطلب'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
-
-  @override
-  State<NotificationsPage> createState() => _NotificationsPageState();
-}
-
-class _NotificationsPageState extends State<NotificationsPage> {
-  List<Map<String, dynamic>> notifications = [];
+class _AdminRequestsPageState extends State<AdminRequestsPage> {
   bool loading = true;
   String error = '';
+  List<Map<String, dynamic>> requests = [];
 
   @override
   void initState() {
     super.initState();
-    loadNotifications();
+    loadRequests();
   }
 
-  Future<void> loadNotifications() async {
+  Future<void> loadRequests() async {
     try {
-      final result = await db
-          .from('notifications')
+      final rows = await db
+          .from('admin_requests')
           .select()
           .order('created_at', ascending: false)
-          .limit(50);
+          .limit(100);
 
       if (!mounted) return;
 
       setState(() {
-        notifications = List<Map<String, dynamic>>.from(result);
+        requests = List<Map<String, dynamic>>.from(rows);
         loading = false;
         error = '';
       });
@@ -2765,214 +2652,106 @@ class _NotificationsPageState extends State<NotificationsPage> {
       if (!mounted) return;
       setState(() {
         loading = false;
-        error = e.toString();
+        error = errorText(e);
       });
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('التنبيهات')),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : error.isNotEmpty
-              ? ErrorView(message: error, onRetry: loadNotifications)
-              : notifications.isEmpty
-                  ? const Center(
-                      child: Text('لا توجد تنبيهات حتى الآن.'),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(12),
-                      itemCount: notifications.length,
-                      itemBuilder: (context, index) {
-                        final item = notifications[index];
-
-                        return Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.notifications_active_outlined,
-                              color: Color(0xFFB54A55),
-                            ),
-                            title: Text(
-                              item['title']?.toString() ?? 'تنبيه',
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Text(
-                                item['content']?.toString() ??
-                                    item['message']?.toString() ??
-                                    '',
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-    );
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  Future<void> signOut(BuildContext context) async {
+  Future<void> updateStatus(
+    Map<String, dynamic> request,
+    String status,
+  ) async {
     try {
-      await db.auth.signOut();
+      await db
+          .from('admin_requests')
+          .update({'status': status})
+          .eq('id', request['id']);
 
-      if (!context.mounted) return;
+      if (!mounted) return;
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const AuthGate()),
-        (route) => false,
-      );
+      showMessage(context, 'تم تحديث حالة الطلب.');
+      await loadRequests();
     } catch (e) {
-      if (!context.mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تعذر تسجيل الخروج: $e')),
-      );
+      if (mounted) {
+        showMessage(context, 'تعذر تحديث الطلب: ${errorText(e)}');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = db.auth.currentUser;
+    if (loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('الإعدادات')),
-      body: ListView(
-        padding: const EdgeInsets.all(18),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: const Color(0xFFB54A55).withOpacity(0.12),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.account_circle_outlined,
-                  size: 48,
-                  color: Color(0xFFB54A55),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'حسابك',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
+    if (error.isNotEmpty) {
+      return ErrorView(message: error, onRetry: loadRequests);
+    }
+
+    if (requests.isEmpty) {
+      return const Center(
+        child: Text('لا توجد طلبات من الطلاب حاليًا.'),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: loadRequests,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: requests.length,
+        itemBuilder: (context, i) {
+          final request = requests[i];
+
+          return Card(
+            color: panel,
+            margin: const EdgeInsets.only(bottom: 12),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${request['title'] ?? 'طلب بلا عنوان'}',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(user?.email ?? 'حساب الطالب'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 18),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.admin_panel_settings_outlined),
-              title: const Text('دخول المدير'),
-              subtitle: const Text('إدارة الدروس والملخصات والأسئلة'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AdminPage(),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${request['message'] ?? 'لا توجد تفاصيل'}',
+                    style: const TextStyle(height: 1.6),
                   ),
-                );
-              },
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: const Text('حول التطبيق'),
-              subtitle: const Text('البريهي التعليمي'),
-              onTap: () {
-                showAboutDialog(
-                  context: context,
-                  applicationName: 'البريهي التعليمي',
-                  applicationVersion: '1.0.0',
-                  applicationLegalese: 'مع تحياتي برهان البريهي',
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 18),
-          OutlinedButton.icon(
-            onPressed: () => signOut(context),
-            icon: const Icon(Icons.logout),
-            label: const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('تسجيل الخروج'),
-            ),
-          ),
-          const SizedBox(height: 24),
-          const Center(
-            child: Text(
-              'مع تحياتي برهان البريهي',
-              style: TextStyle(
-                color: Color(0xFFD4A04D),
-                fontWeight: FontWeight.bold,
+                  const SizedBox(height: 10),
+                  Text(
+                    'الحالة: ${request['status'] ?? 'غير محددة'}',
+                    style: const TextStyle(color: muted),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () => updateStatus(
+                          request,
+                          'in_progress',
+                        ),
+                        child: const Text('قيد المعالجة'),
+                      ),
+                      FilledButton(
+                        onPressed: () => updateStatus(
+                          request,
+                          'completed',
+                        ),
+                        child: const Text('تم الحل'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ErrorView extends StatelessWidget {
-  final String message;
-  final VoidCallback? onRetry;
-
-  const ErrorView({
-    super.key,
-    required this.message,
-    this.onRetry,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.redAccent,
-              size: 52,
-            ),
-            const SizedBox(height: 14),
-            const Text(
-              'حدث خطأ',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            SelectableText(
-              message,
-              textAlign: TextAlign.center,
-            ),
-            if (onRetry != null) ...[
-              const SizedBox(height: 18),
-              ElevatedButton.icon(
-                onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('إعادة المحاولة'),
-              ),
-            ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
