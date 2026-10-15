@@ -1,15 +1,20 @@
+
 name: al_burahei_education
 description: تطبيق البريهي التعليمي
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-sdk: '>=2.17.0 <4.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
-flutter:
-sdk: flutter
-supabase_flutter: ^2.8.4
+  flutter:
+    sdk: flutter
+  supabase_flutter: ^2.8.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
 flutter:
-uses-material-design: true
+  uses-material-design: true
