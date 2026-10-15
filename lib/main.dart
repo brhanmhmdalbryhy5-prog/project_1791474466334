@@ -800,9 +800,9 @@ class _SubjectLessonsPageState extends State<SubjectLessonsPage> {
   }
 }
 
- // =====================================================
- // بطاقة الدرس
- // =====================================================
+// =====================================================
+// بطاقة الدرس
+// =====================================================
 
 class LessonTile extends StatelessWidget {
   final Map<String, dynamic> lesson;
@@ -959,7 +959,6 @@ class LessonDetailPage extends StatelessWidget {
     );
   }
 }
-
 // =====================================================
 // ملخصات المادة
 // =====================================================
@@ -1949,8 +1948,8 @@ class ErrorView extends StatelessWidget {
   }
 }
 
- // =====================================================
-// صفحة تفعيل المدير — تم إصلاح خطأ async/await
+// =====================================================
+// صفحة تفعيل المدير
 // =====================================================
 
 class AdminPage extends StatefulWidget {
@@ -2143,7 +2142,6 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 }
-
 // =====================================================
 // لوحة المدير الرئيسية
 // =====================================================
@@ -2300,14 +2298,17 @@ class _AdminContentPageState extends State<AdminContentPage> {
       setState(() {
         subjects = loadedSubjects;
         entries = List<Map<String, dynamic>>.from(contentRows);
+
         selectedSubjectId ??= loadedSubjects.isNotEmpty
             ? '${loadedSubjects.first['id']}'
             : null;
+
         loading = false;
         error = '';
       });
     } catch (e) {
       if (!mounted) return;
+
       setState(() {
         loading = false;
         error = errorText(e);
@@ -2334,16 +2335,17 @@ class _AdminContentPageState extends State<AdminContentPage> {
       return;
     }
 
-    if (isQuestion) {
-      final questionText = questionController.text.trim();
-      final optionTexts = [
-        option1Controller.text.trim(),
-        option2Controller.text.trim(),
-        option3Controller.text.trim(),
-        option4Controller.text.trim(),
-      ];
+    final optionTexts = [
+      option1Controller.text.trim(),
+      option2Controller.text.trim(),
+      option3Controller.text.trim(),
+      option4Controller.text.trim(),
+    ];
 
-      if (questionText.isEmpty || optionTexts.any((v) => v.isEmpty)) {
+    if (isQuestion) {
+      final question = questionController.text.trim();
+
+      if (question.isEmpty || optionTexts.any((v) => v.isEmpty)) {
         showMessage(context, 'أدخل السؤال وجميع الخيارات الأربعة.');
         return;
       }
@@ -2372,12 +2374,6 @@ class _AdminContentPageState extends State<AdminContentPage> {
 
       if (isQuestion) {
         final questionId = inserted['id'];
-        final optionTexts = [
-          option1Controller.text.trim(),
-          option2Controller.text.trim(),
-          option3Controller.text.trim(),
-          option4Controller.text.trim(),
-        ];
 
         for (int i = 0; i < optionTexts.length; i++) {
           await db.from('question_options').insert({
@@ -2397,6 +2393,8 @@ class _AdminContentPageState extends State<AdminContentPage> {
       option2Controller.clear();
       option3Controller.clear();
       option4Controller.clear();
+
+      setState(() => correctOption = 0);
 
       showMessage(context, 'تمت إضافة المحتوى بنجاح.');
       await loadData();
@@ -2441,6 +2439,7 @@ class _AdminContentPageState extends State<AdminContentPage> {
       await db.from(tableName).delete().eq('id', id);
 
       if (!mounted) return;
+
       showMessage(context, 'تم حذف المحتوى.');
       await loadData();
     } catch (e) {
@@ -2472,6 +2471,8 @@ class _AdminContentPageState extends State<AdminContentPage> {
                     style: TextStyle(color: muted),
                   ),
                   const SizedBox(height: 18),
+
+                  // اختيار المادة
                   DropdownButtonFormField<String>(
                     value: selectedSubjectId,
                     decoration: const InputDecoration(
@@ -2487,7 +2488,10 @@ class _AdminContentPageState extends State<AdminContentPage> {
                       setState(() => selectedSubjectId = value);
                     },
                   ),
+
                   const SizedBox(height: 14),
+
+                  // عنوان المحتوى
                   TextField(
                     controller: titleController,
                     decoration: InputDecoration(
@@ -2496,7 +2500,10 @@ class _AdminContentPageState extends State<AdminContentPage> {
                           : 'عنوان المحتوى',
                     ),
                   ),
+
                   const SizedBox(height: 14),
+
+                  // حقول الأسئلة وخيارات الإجابة
                   if (isQuestion) ...[
                     TextField(
                       controller: questionController,
@@ -2506,7 +2513,9 @@ class _AdminContentPageState extends State<AdminContentPage> {
                         labelText: 'نص السؤال',
                       ),
                     ),
+
                     const SizedBox(height: 12),
+
                     for (final item in [
                       option1Controller,
                       option2Controller,
@@ -2522,27 +2531,28 @@ class _AdminContentPageState extends State<AdminContentPage> {
                           ),
                         ),
                       ),
+
                     const SizedBox(height: 4),
                     const Text('حدد الإجابة الصحيحة:'),
                     const SizedBox(height: 6),
-                    RadioGroup<int>(
-                      groupValue: correctOption,
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => correctOption = value);
-                        }
-                      },
-                      child: Column(
-                        children: List.generate(
-                          4,
-                          (i) => RadioListTile<int>(
-                            value: i,
-                            title: Text('الخيار ${i + 1}'),
-                          ),
+
+                    Column(
+                      children: List.generate(
+                        4,
+                        (i) => RadioListTile<int>(
+                          groupValue: correctOption,
+                          value: i,
+                          title: Text('الخيار ${i + 1}'),
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => correctOption = value);
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ] else
+                  ] else ...[
+                    // يظهر للدرس والملخص فقط، وليس للسؤال
                     TextField(
                       controller: contentController,
                       minLines: 5,
@@ -2554,7 +2564,10 @@ class _AdminContentPageState extends State<AdminContentPage> {
                         alignLabelWithHint: true,
                       ),
                     ),
+                  ],
+
                   const SizedBox(height: 16),
+
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
@@ -2568,9 +2581,11 @@ class _AdminContentPageState extends State<AdminContentPage> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 28),
                   const Divider(),
                   const SizedBox(height: 10),
+
                   const Text(
                     'المحتوى الحالي',
                     style: TextStyle(
@@ -2578,7 +2593,9 @@ class _AdminContentPageState extends State<AdminContentPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   const SizedBox(height: 12),
+
                   if (entries.isEmpty)
                     const Text('لا يوجد محتوى مضاف حتى الآن.')
                   else
@@ -2650,6 +2667,7 @@ class _AdminRequestsPageState extends State<AdminRequestsPage> {
       });
     } catch (e) {
       if (!mounted) return;
+
       setState(() {
         loading = false;
         error = errorText(e);
