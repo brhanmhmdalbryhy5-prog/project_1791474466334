@@ -4,9 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="تطبيق البريهي التعليمي"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:label="تطبيق البريهي التعليمي">
 
         <activity
             android:name=".MainActivity"
